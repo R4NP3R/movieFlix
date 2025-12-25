@@ -1,4 +1,5 @@
-MovieFlix 🎬
+# MovieFlix 🎬
+
 O MovieFlix é uma API REST desenvolvida em Java com Spring Boot para gerenciamento de um catálogo de filmes. O projeto permite organizar títulos por categorias e listar em quais serviços de streaming (Netflix, Prime Video, Disney+, etc.) eles estão disponíveis.
 
 🚀 Funcionalidades
