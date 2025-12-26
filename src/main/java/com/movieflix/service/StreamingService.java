@@ -7,6 +7,7 @@ import com.movieflix.repository.StreamingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,5 +26,14 @@ public class StreamingService {
   public Optional<Streaming> getStreamingById(Long id) {
     return streamingRepository.findById(id);
   }
+
+  public List<Streaming> listAllStreaming() {
+    return streamingRepository.findAll();
+  }
+
+  public void deleteStreamingById(Long id) {
+    streamingRepository.deleteById(id);
+  }
+
 
 }
