@@ -3,6 +3,7 @@ package com.movieflix.service;
 import com.movieflix.controller.request.MovieRequest;
 import com.movieflix.entity.Category;
 import com.movieflix.entity.Movie;
+import com.movieflix.entity.Streaming;
 import com.movieflix.mapper.MovieMapper;
 import com.movieflix.repository.CategoryRepository;
 import com.movieflix.repository.MovieRepository;
@@ -20,14 +21,19 @@ public class MovieService {
 
   private final MovieRepository movieRepository;
   private final CategoryService categoryService;
+  private final StreamingService streamingService;
 
   public Movie saveMovie(MovieRequest request) {
     List<Category> categories = new ArrayList<>();
+    List<Streaming> streamings = new ArrayList<>();
 
-    request.categories().forEach(c -> categoryService.getCategoryById(c).ifPresent(categories::add));
+    request.categories().forEach(cId -> categoryService.getCategoryById(cId).ifPresent(categories::add));
+    request.streamings().forEach(sId -> streamingService.getStreamingById(sId).ifPresent(streamings::add));
+
 
     Movie newMovie = MovieMapper.map(request);
     newMovie.setCategories(categories);
+    newMovie.setStreamings(streamings);
 
 
     return movieRepository.save(newMovie);
