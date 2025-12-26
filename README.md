@@ -18,7 +18,7 @@ Spring Boot 3
 
 Spring Data JPA (Persistência de dados)
 
-H2 Database (Banco de dados em memória para testes) ou PostgreSQL
+PostgreSQL
 
 Maven (Gerenciador de dependências)
 
