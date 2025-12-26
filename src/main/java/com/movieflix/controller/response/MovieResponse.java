@@ -13,6 +13,7 @@ public record MovieResponse(Long id,
                             @JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
                             LocalDate releaseDate,
                             Float rating,
+                            String imageUrl,
                             List<CategoryResponse> categories,
                             List<StreamingResponse> streamings
                             ) {

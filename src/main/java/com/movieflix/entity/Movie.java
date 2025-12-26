@@ -36,6 +36,9 @@ public class Movie {
 
   private Float rating;
 
+  @Column(name = "image_url")
+  private String imageUrl;
+
   @CreationTimestamp
   @Column(name = "created_at")
   private LocalDateTime createdAt;

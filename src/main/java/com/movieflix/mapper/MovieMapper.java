@@ -26,6 +26,7 @@ public class MovieMapper {
             .description(request.description())
             .releaseDate(request.releaseDate())
             .rating(request.rating())
+            .imageUrl(request.imageUrl())
             .categories(categories)
             .streamings(streamings)
             .build();
@@ -42,6 +43,7 @@ public class MovieMapper {
             .description(movie.getDescription())
             .releaseDate(movie.getReleaseDate())
             .rating(movie.getRating())
+            .imageUrl(movie.getImageUrl())
             .categories(categories)
             .streamings(streamings)
             .build();
