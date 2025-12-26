@@ -7,6 +7,8 @@ import com.movieflix.repository.StreamingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class StreamingService {
@@ -18,6 +20,10 @@ public class StreamingService {
     Streaming newStreaming = StreamingMapper.map(request);
 
     return streamingRepository.save(newStreaming);
+  }
+
+  public Optional<Streaming> getStreamingById(Long id) {
+    return streamingRepository.findById(id);
   }
 
 }
