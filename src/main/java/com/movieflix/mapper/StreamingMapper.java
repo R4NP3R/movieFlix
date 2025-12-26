@@ -11,6 +11,7 @@ public class StreamingMapper {
   public Streaming map(StreamingRequest request) {
     return Streaming.builder()
             .name(request.name())
+            .imageUrl(request.imageUrl())
             .build();
   }
 
@@ -18,6 +19,7 @@ public class StreamingMapper {
     return StreamingResponse.builder()
             .id(streaming.getId())
             .name(streaming.getName())
+            .imageUrl(streaming.getImageUrl())
             .build();
   }
 
