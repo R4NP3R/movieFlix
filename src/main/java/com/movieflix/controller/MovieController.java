@@ -1,5 +1,6 @@
-package com.movieflix.controller.request;
+package com.movieflix.controller;
 
+import com.movieflix.controller.request.MovieRequest;
 import com.movieflix.controller.response.MovieResponse;
 import com.movieflix.mapper.MovieMapper;
 import com.movieflix.service.MovieService;
