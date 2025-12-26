@@ -8,6 +8,8 @@ import com.movieflix.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -18,6 +20,11 @@ public class CategoryService {
     Category newCategory = CategoryMapper.map(request);
 
     return categoryRepository.save(newCategory);
+  }
+
+  public Optional<Category> getCategoryById (Long id) {
+
+    return categoryRepository.findById(id);
   }
 
 
