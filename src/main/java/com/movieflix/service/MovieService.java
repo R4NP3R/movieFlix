@@ -1,6 +1,7 @@
 package com.movieflix.service;
 
 import com.movieflix.controller.request.MovieRequest;
+import com.movieflix.controller.request.StreamingRequest;
 import com.movieflix.entity.Category;
 import com.movieflix.entity.Movie;
 import com.movieflix.entity.Streaming;
@@ -24,17 +25,12 @@ public class MovieService {
   private final StreamingService streamingService;
 
   public Movie saveMovie(MovieRequest request) {
-    List<Category> categories = new ArrayList<>();
-    List<Streaming> streamings = new ArrayList<>();
-
-    request.categories().forEach(cId -> categoryService.getCategoryById(cId).ifPresent(categories::add));
-    request.streamings().forEach(sId -> streamingService.getStreamingById(sId).ifPresent(streamings::add));
-
+    List<Category> categories = getCategoryList(request.categories());
+    List<Streaming> streamings = getStreamingList(request.streamings());
 
     Movie newMovie = MovieMapper.map(request);
     newMovie.setCategories(categories);
     newMovie.setStreamings(streamings);
-
 
     return movieRepository.save(newMovie);
   }
@@ -51,6 +47,17 @@ public class MovieService {
     movieRepository.deleteById(id);
   }
 
+  public List<Category> getCategoryList(List<Long> categoriesId) {
+    List<Category> categories = new ArrayList<>();
+    categoriesId.forEach(cId -> categoryService.getCategoryById(cId).ifPresent(categories::add));
+    return categories;
+  }
+
+  public List<Streaming> getStreamingList(List<Long> StreamingsId) {
+    List<Streaming> streamings = new ArrayList<>();
+    StreamingsId.forEach(sId -> streamingService.getStreamingById(sId).ifPresent(streamings::add));
+    return streamings;
+  }
 
 
 }
