@@ -5,6 +5,7 @@ import com.movieflix.controller.response.MovieResponse;
 import com.movieflix.entity.Movie;
 import com.movieflix.mapper.MovieMapper;
 import com.movieflix.service.MovieService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class MovieController {
 
 
   @PostMapping
-  public ResponseEntity<MovieResponse> createMovie(@RequestBody MovieRequest request) {
+  public ResponseEntity<MovieResponse> createMovie(@Valid @RequestBody MovieRequest request) {
     MovieResponse newMovie = MovieMapper.map(movieService.saveMovie(request));
 
     return ResponseEntity.status(HttpStatus.CREATED).body(newMovie);
