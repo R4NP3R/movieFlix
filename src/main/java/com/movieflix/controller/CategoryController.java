@@ -2,7 +2,6 @@ package com.movieflix.controller;
 
 import com.movieflix.controller.request.CategoryRequest;
 import com.movieflix.controller.response.CategoryResponse;
-import com.movieflix.controller.swagger.CategorySwagger;
 import com.movieflix.entity.Category;
 import com.movieflix.mapper.CategoryMapper;
 import com.movieflix.service.CategoryService;
@@ -19,7 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/movieflix/category")
 @RequiredArgsConstructor
-public class CategoryController implements CategorySwagger {
+public class CategoryController {
 
   private final CategoryService categoryService;
 

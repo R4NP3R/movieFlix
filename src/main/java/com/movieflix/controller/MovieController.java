@@ -2,7 +2,6 @@ package com.movieflix.controller;
 
 import com.movieflix.controller.request.MovieRequest;
 import com.movieflix.controller.response.MovieResponse;
-import com.movieflix.controller.swagger.MovieSwagger;
 import com.movieflix.entity.Movie;
 import com.movieflix.mapper.MovieMapper;
 import com.movieflix.service.MovieService;
@@ -20,7 +19,7 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/movieflix/movie")
 @RequiredArgsConstructor
-public class MovieController implements MovieSwagger {
+public class MovieController {
 
   private final MovieService movieService;
 

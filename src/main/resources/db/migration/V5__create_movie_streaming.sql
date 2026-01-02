@@ -1,6 +1,0 @@
-CREATE TABLE movie_streaming (
-  movie_id INT,
-  streaming_id INT,
-  CONSTRAINT FK_MOVIE_STREAMING_MOVIE FOREIGN KEY (movie_id) REFERENCES movie(id),
-  CONSTRAINT FK_MOVIE_STREAMING_STREAMING FOREIGN KEY (streaming_id) REFERENCES streaming(id)
-)
