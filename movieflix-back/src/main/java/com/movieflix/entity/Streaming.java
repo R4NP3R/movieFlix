@@ -1,0 +1,27 @@
+package com.movieflix.entity;
+
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "streaming")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
+public class Streaming {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(nullable = false, unique = true)
+  private String name;
+
+  @Column(name = "image_url")
+  private String imageUrl;
+}

@@ -1,0 +1,6 @@
+CREATE TABLE movie_category (
+  movie_id INT,
+  category_id INT,
+  CONSTRAINT FK_MOVIE_CATEGORY_MOVIE FOREIGN KEY (movie_id) REFERENCES movie(id),
+  CONSTRAINT FK_MOVIE_CATEGORY_CATEGORY FOREIGN KEY (category_id) REFERENCES category(id)
+)
