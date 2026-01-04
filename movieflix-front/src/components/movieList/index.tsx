@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import type { Movie } from "../movieflix";
-import { getMovies } from "../api";
+import type { Movie } from "../../movieflix";
+import { getMovies } from "../../api";
 
 export const MovieList = () => {
   const [movies, setMovies] = useState<Movie[]>();
-  const [serverError, setServerError] = useState<String>();
 
   useEffect(() => {
     const initMovies = async () => {
       try {
         const result = await getMovies();
-        console.log(result.data);
         setMovies(result.data);
       } catch (err) {
         return "Falha ao buscar filmes";
@@ -22,7 +20,7 @@ export const MovieList = () => {
   return (
     <ul className="mt-10 flex gap-10">
       {!movies ? (
-        <div className="w-full min-h-dvh flex items-center justify-center text-4xl text-white">
+        <div className="w-full min-h-full flex items-center justify-center text-4xl text-white">
           Carregando...
         </div>
       ) : (
@@ -35,7 +33,7 @@ export const MovieList = () => {
                 <span
                   className={
                     rating >= 5
-                      ? `absolute right-4 bottom-12 rounded-full p-2 bg-orange-400 font-bold`
+                      ? `absolute right-4 bottom-12 rounded-full p-2 bg-green-400 font-bold`
                       : `absolute right-4 bottom-12 rounded-full p-2 bg-red-500 font-bold`
                   }
                 >
