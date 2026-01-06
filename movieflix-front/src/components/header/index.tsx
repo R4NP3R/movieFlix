@@ -21,12 +21,11 @@ export const Header = () => {
     return () => {
       document.removeEventListener("click", clickOutsideUserMenu)
     }
-
   }, [])
 
 
   return (
-    <header className="w-full fixed mt-">
+    <header className="w-full fixed z-50">
       <div className="flex justify-between items-center my-container">
         <Link to="" className="text-red-700 text-4xl font-bold">MovieFlix</Link>
         <nav className="py-6 px-8 bg-slate-800 rounded-b-4xl">
@@ -63,7 +62,7 @@ export const Header = () => {
             {handleUserMenu ? <ChevronUp /> : <ChevronDown />}
           </button>
           {handleUserMenu && (
-            <div ref={userMenuRef} className="absolute top-15 right-0 bg-slate-600 rounded-2xl pb-4 ">
+            <div ref={userMenuRef} className="absolute top-15 right-0 z-50 bg-slate-600 rounded-2xl pb-4 ">
               <h3 className="text-white font-bold border-b border-slate-400 text-center text-lg py-2">Create</h3>
               <div className="px-8 pt-2">
                 <ul className="">
