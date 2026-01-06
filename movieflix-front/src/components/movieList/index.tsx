@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Movie } from "../../movieflix";
 import { getMovies } from "../../api";
+import { twMerge } from "tailwind-merge";
 
 export const MovieList = () => {
   const [movies, setMovies] = useState<Movie[]>();
@@ -18,7 +19,7 @@ export const MovieList = () => {
   }, []);
 
   return (
-    <ul className="mt-10 flex gap-10">
+    <ul className="mt-10 flex gap-10 flex-wrap">
       {!movies ? (
         <div className="w-full min-h-full flex items-center justify-center text-4xl text-white">
           Carregando...
@@ -26,18 +27,15 @@ export const MovieList = () => {
       ) : (
         <>
           {movies.map((movie) => {
-            const { title, rating, imageUrl } = movie;
+            const { title, rating, imageUrl, id } = movie;
             return (
-              <li className="w-60 text-white relative" key={title}>
-                <img src={imageUrl} alt="" />
+              <li className="w-60 text-white relative flex flex-col" key={id}>
+                <img className="w-60 h-90" src={imageUrl} alt="" />
                 <span
-                  className={
-                    rating >= 5
-                      ? `absolute right-4 bottom-12 rounded-full p-2 bg-green-400 font-bold`
-                      : `absolute right-4 bottom-12 rounded-full p-2 bg-red-500 font-bold`
+                  className={twMerge("absolute right-4 bottom-12 rounded-full p-2 font-bold", "bg-red-600",  rating > 5 && "bg-orange-400", rating > 7 && "bg-green-400")
                   }
                 >
-                  {rating}
+                  {rating.toFixed(1)}
                 </span>
                 <h2 className="text-2xl">{title}</h2>
               </li>

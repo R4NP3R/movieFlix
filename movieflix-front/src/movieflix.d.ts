@@ -1,4 +1,5 @@
 export interface Movie {
+  id: number;
   title: string;
   description: string;
   releaseDate: Date;
@@ -12,4 +13,15 @@ export interface Movie {
     id: number;
     name: string;
   }[];
+}
+
+export interface Category {
+  id: number;
+  name: string;
+}
+
+export interface Streaming {
+  id: number;
+  name: string;
+  imageUrl: string;
 }
