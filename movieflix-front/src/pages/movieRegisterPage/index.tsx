@@ -1,15 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { createMovie, getCategories, getStreaming } from "../../api";
 import { MoviePreview } from "../../components/moviePreview";
 import type { Category, Streaming } from "../../movieflix";
+import { formatDate } from "../../utils/formatDate";
 import {
   registerMovieSchema,
   type registerMovieInfoSchema,
 } from "../../zodSchemas/registerMovieSchema";
-import { formatDate } from "../../utils/formatDate";
 
 export interface MoviePreviewInterface {
   title?: string;
@@ -22,7 +23,6 @@ export interface MoviePreviewInterface {
 export const MovieRegisterPage = () => {
   const [categories, setCategories] = useState<Category[]>();
   const [streamings, setStreamings] = useState<Streaming[]>();
-  const [sucessCreateMovie, setSucessCreateMovie] = useState<string>();
   const [selectedMovieCategories, setSelectedMovieCategories] = useState<
     Category[]
   >([]);
@@ -32,6 +32,7 @@ export const MovieRegisterPage = () => {
   const { register, handleSubmit, setValue, formState: {errors} } = useForm<registerMovieInfoSchema>({
     resolver: zodResolver(registerMovieSchema),
   });
+  const navigate = useNavigate();
 
   setValue("streamings", selectedMovieStreamings.map(s => s.id))
   setValue("categories", selectedMovieCategories.map(s => s.id))
@@ -72,12 +73,27 @@ export const MovieRegisterPage = () => {
     }
   }
 
-  function creationSucess() {
-    setSucessCreateMovie("Filme criado com sucesso!")
+  function removeSelectedCategory(index: number) {
+    setCategories([...categories || [], {
+      id: selectedMovieCategories[index].id,
+      name: selectedMovieCategories[index].name
+    }])    
+    selectedMovieCategories.splice(index, 1) 
     
-    setInterval(() => {
-      setSucessCreateMovie(undefined)
-    }, 3000);
+  }
+
+  function removeSelectedStreaming(index: number) {
+    setStreamings([...streamings || [], {
+      id: selectedMovieStreamings[index].id,
+      name: selectedMovieStreamings[index].name,
+      imageUrl: selectedMovieStreamings[index].imageUrl
+    }])
+    
+    selectedMovieStreamings.splice(index, 1)
+  }
+
+  function creationSucess() {
+    navigate("/")    
   }
 
   function handlecreateNewMovie(data: registerMovieInfoSchema) {
@@ -271,7 +287,7 @@ export const MovieRegisterPage = () => {
               const { id, name } = category;
               if (name != selectedMovieCategories[id]?.name) {
                 return (
-                  <option key={id} value={i}>
+                  <option key={id} value={i} className="relative ">
                     {name}
                   </option>
                 );
@@ -282,7 +298,7 @@ export const MovieRegisterPage = () => {
         </div>
       </form>
       <div className="flex justify-center items-end max-h-[50vh] relative">
-        {sucessCreateMovie && (<span className="text-white absolute top-2 animate-bounce bg-green-400 rounded-lg px-4 py-2">{sucessCreateMovie}</span>)}
+        {/* {sucessCreateMovie && (<span className="text-white absolute top-2 animate-bounce bg-green-400 rounded-lg px-4 py-2">{sucessCreateMovie}</span>)} */}
         <button
           form="createMovie"
           className="w-full h-8 bg-slate-800 rounded-2xl text-slate-200 cursor-pointer"
@@ -294,6 +310,8 @@ export const MovieRegisterPage = () => {
         newMovie={newMoviePreview}
         category={selectedMovieCategories}
         streamings={selectedMovieStreamings}
+        removeCategory={removeSelectedCategory}
+        removeStreaming={removeSelectedStreaming}
       ></MoviePreview>
     </div>
   );

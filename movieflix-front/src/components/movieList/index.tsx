@@ -30,13 +30,19 @@ export const MovieList = () => {
             const { title, rating, imageUrl, id } = movie;
             return (
               <li className="w-60 text-white relative flex flex-col" key={id}>
-                <img className="w-60 h-90" src={imageUrl} alt="" />
-                <span
-                  className={twMerge("absolute right-4 bottom-12 rounded-full p-2 font-bold", "bg-red-600",  rating > 5 && "bg-orange-400", rating > 7 && "bg-green-400")
-                  }
-                >
-                  {rating.toFixed(1)}
-                </span>
+                <div className="relative w-fit">
+                  <img className="w-60" src={imageUrl} alt="" />
+                  <span
+                    className={twMerge(
+                      "absolute right-4 bottom-4 rounded-full p-2 font-bold",
+                      "bg-red-600",
+                      rating && rating > 5 && "bg-orange-400",
+                      rating && rating > 7 && "bg-green-400"
+                    )}
+                  >
+                    {rating === 10 ? rating : rating?.toFixed(1)}
+                  </span>
+                </div>
                 <h2 className="text-2xl">{title}</h2>
               </li>
             );
