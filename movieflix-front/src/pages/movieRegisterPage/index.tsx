@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState, type ChangeEvent } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { createMovie, getCategories, getStreaming } from "../../api";
@@ -28,14 +28,19 @@ export const MovieRegisterPage = () => {
   >([]);
   const [selectedMovieStreamings, setSelectedMovieStreamings] = useState<
     Streaming[]
-  >([])
-  const { register, handleSubmit, setValue, formState: {errors} } = useForm<registerMovieInfoSchema>({
+  >([]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm<registerMovieInfoSchema>({
     resolver: zodResolver(registerMovieSchema),
+    mode: "onChange",
   });
   const navigate = useNavigate();
-
-  setValue("streamings", selectedMovieStreamings.map(s => s.id))
-  setValue("categories", selectedMovieCategories.map(s => s.id))
 
   const [newMoviePreview, setNewMoviePreview] = useState<MoviePreviewInterface>(
     {
@@ -54,6 +59,11 @@ export const MovieRegisterPage = () => {
         ...(selectedMovieCategories || []),
         { id: categories[index].id, name: categories[index].name },
       ]);
+      setValue(
+        "streamings",
+        selectedMovieStreamings.map((s) => s.id)
+      );
+      clearErrors("categories")
       categories.splice(index, 1);
     }
   }
@@ -69,43 +79,56 @@ export const MovieRegisterPage = () => {
           imageUrl: streamings[index].imageUrl,
         },
       ]);
+      setValue(
+        "categories",
+        selectedMovieCategories.map((s) => s.id)
+      );
+      clearErrors("streamings")
       streamings.splice(index, 1);
     }
   }
 
   function removeSelectedCategory(index: number) {
-    setCategories([...categories || [], {
-      id: selectedMovieCategories[index].id,
-      name: selectedMovieCategories[index].name
-    }])    
-    selectedMovieCategories.splice(index, 1) 
-    
+    setCategories([
+      ...(categories || []),
+      {
+        id: selectedMovieCategories[index].id,
+        name: selectedMovieCategories[index].name,
+      },
+    ]);
+    selectedMovieCategories.splice(index, 1);
   }
 
   function removeSelectedStreaming(index: number) {
-    setStreamings([...streamings || [], {
-      id: selectedMovieStreamings[index].id,
-      name: selectedMovieStreamings[index].name,
-      imageUrl: selectedMovieStreamings[index].imageUrl
-    }])
-    
-    selectedMovieStreamings.splice(index, 1)
+    setStreamings([
+      ...(streamings || []),
+      {
+        id: selectedMovieStreamings[index].id,
+        name: selectedMovieStreamings[index].name,
+        imageUrl: selectedMovieStreamings[index].imageUrl,
+      },
+    ]);
+
+    selectedMovieStreamings.splice(index, 1);
   }
 
   function creationSucess() {
-    navigate("/")    
+    reset();
+    navigate("/");
   }
 
-  function handlecreateNewMovie(data: registerMovieInfoSchema) {
-    try {
-      data.releaseDate = formatDate(data.releaseDate);      
-      parseFloat(data.rating)
-      createMovie(data)
-      creationSucess()
-    } catch (err) {
-
+  async function handlecreateNewMovie(data: registerMovieInfoSchema) {
+    data.releaseDate = formatDate(data.releaseDate);
+    parseFloat(data.rating);
+    const result = await createMovie(data);
+    if (typeof result === "object") {
+      console.log("message erro:", result.data);
+    } else {
+      creationSucess();
     }
   }
+
+  useEffect(() => {}, [errors]);
 
   useEffect(() => {
     if (newMoviePreview.imageUrl === "") {
@@ -153,14 +176,21 @@ export const MovieRegisterPage = () => {
             Title:
           </label>
           <input
-            {...register("title")}
-            onChange={(e) =>
-              setNewMoviePreview({ ...newMoviePreview, title: e.target.value })
-            }
+            autoFocus
+            {...register("title", {
+              onChange: (e) =>
+                setNewMoviePreview({
+                  ...newMoviePreview,
+                  title: e.target.value,
+                }),
+            })}
             type="text"
             id="title"
             placeholder="insert title"
-            className={twMerge("border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0", errors.title?.message && "border-red-600")}
+            className={twMerge(
+              "border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0",
+              errors.title?.message && "border-red-600"
+            )}
           />
           {<div className="text-sm text-red-600">{errors.title?.message}</div>}
         </div>
@@ -169,74 +199,98 @@ export const MovieRegisterPage = () => {
             Image URL:
           </label>
           <input
-            {...register("imageUrl")}
+            {...register("imageUrl", {
+              onChange: (e) =>
+                setNewMoviePreview({
+                  ...newMoviePreview,
+                  imageUrl: e.target.value,
+                }),
+            })}
             type="text"
             id="imageUrl"
-            onChange={(e) =>
-              setNewMoviePreview({
-                ...newMoviePreview,
-                imageUrl: e.target.value,
-              })
-            }
             placeholder="insert image url"
-            className={twMerge("border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0", errors.imageUrl?.message && "border-red-600")}
+            className={twMerge(
+              "border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0",
+              errors.imageUrl?.message && "border-red-600"
+            )}
           />
-          {<div className="text-sm text-red-600">{errors.imageUrl?.message}</div>}
+          {
+            <div className="text-sm text-red-600">
+              {errors.imageUrl?.message}
+            </div>
+          }
         </div>
         <div className="flex flex-col">
           <label htmlFor="description" className="text-slate-200 text-[20px]">
             Descrição:
           </label>
           <textarea
-            {...register("description")}
+            {...register("description", {
+              onChange: (e) =>
+                setNewMoviePreview({
+                  ...newMoviePreview,
+                  description: e.target.value,
+                }),
+            })}
             id="description"
             placeholder="Insert description"
-            onChange={(e) =>
-              setNewMoviePreview({
-                ...newMoviePreview,
-                description: e.target.value,
-              })
-            }
-            className={twMerge("border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0 resize-y h-9 min-h-9 max-h-80", errors.description?.message && "border-red-600")}
+            className={twMerge(
+              "border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0 resize-y h-9 min-h-9 max-h-80",
+              errors.description?.message && "border-red-600"
+            )}
           />
-          {<div className="text-sm text-red-600">{errors.description?.message}</div>}
+          {
+            <div className="text-sm text-red-600">
+              {errors.description?.message}
+            </div>
+          }
         </div>
         <div className="flex flex-col">
           <label htmlFor="date" className="text-slate-200 text-[20px]">
             Release Date:
           </label>
           <input
-            {...register("releaseDate")}
+            {...register("releaseDate", {
+              onChange: (e) =>
+                setNewMoviePreview({
+                  ...newMoviePreview,
+                  releaseDate: formatDate(e.target.value),
+                }),
+            })}
             type="date"
             id="date"
-            onChange={(e) =>
-              setNewMoviePreview({
-                ...newMoviePreview,
-                releaseDate: formatDate(e.target.value)
-              })
-            }
-            className={twMerge("border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0", errors.releaseDate?.message && "border-red-600")}
+            className={twMerge(
+              "border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0",
+              errors.releaseDate?.message && "border-red-600"
+            )}
           />
-          {<div className="text-sm text-red-600">{errors.releaseDate?.message}</div>}
+          {
+            <div className="text-sm text-red-600">
+              {errors.releaseDate?.message}
+            </div>
+          }
         </div>
         <div className="flex flex-col">
           <label htmlFor="rating" className="text-slate-200 text-[20px]">
             Rating:
           </label>
           <input
-            {...register("rating")}
-            onChange={(e) =>
-              setNewMoviePreview({
-                ...newMoviePreview,
-                rating: Number(e.target.value),
-              })
-            }
+            {...register("rating", {
+              onChange: (e) =>
+                setNewMoviePreview({
+                  ...newMoviePreview,
+                  rating: Number(e.target.value),
+                }),
+            })}
             type="number"
             max={10}
             step={0.1}
             id="rating"
             placeholder="insert rating"
-            className={twMerge("border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0", errors.rating?.message && "border-red-600")}
+            className={twMerge(
+              "border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0",
+              errors.rating?.message && "border-red-600"
+            )}
           />
           {<div className="text-sm text-red-600">{errors.rating?.message}</div>}
         </div>
@@ -245,8 +299,11 @@ export const MovieRegisterPage = () => {
             Streaming:
           </label>
           <select
-            onChange={addStreaming}
-            className={twMerge("border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0", errors.streamings?.message && "border-red-600")}
+            onChange={(e) => addStreaming(e)}
+            className={twMerge(
+              "border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0",
+              errors.streamings?.message && "border-red-600"
+            )}
             name="categories"
             id="categories"
           >
@@ -266,7 +323,11 @@ export const MovieRegisterPage = () => {
               }
             })}
           </select>
-          {<div className="text-sm text-red-600">{errors.streamings?.message}</div>}
+          {
+            <div className="text-sm text-red-600">
+              {errors.streamings?.message}
+            </div>
+          }
         </div>
         <div className="flex flex-col">
           <label htmlFor="categories" className="text-slate-200 text-[20px]">
@@ -274,7 +335,10 @@ export const MovieRegisterPage = () => {
           </label>
           <select
             onChange={addCategory}
-            className={twMerge("border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0", errors.categories?.message && "border-red-600")}
+            className={twMerge(
+              "border-2 px-4 py-1 text-slate-200 border-slate-400 rounded-lg focus:outline-0",
+              errors.categories?.message && "border-red-600"
+            )}
             name="categories"
             id="categories"
           >
@@ -294,7 +358,11 @@ export const MovieRegisterPage = () => {
               }
             })}
           </select>
-          {<div className="text-sm text-red-600">{errors.categories?.message}</div>}
+          {
+            <div className="text-sm text-red-600">
+              {errors.categories?.message}
+            </div>
+          }
         </div>
       </form>
       <div className="flex justify-center items-end max-h-[50vh] relative">
