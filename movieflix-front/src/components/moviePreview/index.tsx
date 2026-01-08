@@ -1,24 +1,17 @@
 import { twMerge } from "tailwind-merge";
-import type { Category, Streaming } from "../../movieflix";
-import type { MoviePreviewInterface } from "../../pages/movieRegisterPage";
 import { X } from "lucide-react";
+import { useContext } from "react";
+import { newMovieContext } from "../../context/NewMovie";
 
-interface MoviePreviewProps {
-  newMovie: MoviePreviewInterface;
-  category: Category[];
-  streamings: Streaming[];
-  removeCategory: (index: number) => void;
-  removeStreaming: (index: number) => void;
-}
-
-export const MoviePreview = ({
-  newMovie,
-  category,
-  streamings,
-  removeCategory,
-  removeStreaming
-}: MoviePreviewProps) => {
-  const { title, description, imageUrl, rating, releaseDate } = newMovie;
+export const MoviePreview = () => {
+  const {
+    selectedMovieCategories,
+    selectedMovieStreamings,
+    removeSelectedCategory,
+    removeSelectedStreaming,
+    newMoviePreview,
+  } = useContext(newMovieContext);
+  const { title, description, imageUrl, rating, releaseDate } = newMoviePreview;
 
   return (
     <aside className="flex flex-col text-slate-200">
@@ -39,7 +32,7 @@ export const MoviePreview = ({
       <span className="text-slate-400 text-lg">{releaseDate}</span>
       <p className="w-2/3">{description}</p>
       <div className="flex gap-4 mt-2">
-        {streamings?.map((streaming, i) => {
+        {selectedMovieStreamings?.map((streaming, i) => {
           const { name, imageUrl } = streaming;
           return (
             <div
@@ -48,18 +41,27 @@ export const MoviePreview = ({
             >
               <img className="w-8" src={imageUrl} alt="" />
               <p className="cursor-default">{name}</p>
-              <X onClick={() => removeStreaming(i)} className="absolute right-0 top-2.25 w-4 hidden group-hover:block cursor-pointer"/>
+              <X
+                onClick={() => removeSelectedStreaming(i)}
+                className="absolute right-0 top-2.25 w-4 hidden group-hover:block cursor-pointer"
+              />
             </div>
           );
         })}
       </div>
       <div className="flex gap-4 mt-2 flex-wrap">
-        {category?.map((streaming, i) => {
+        {selectedMovieCategories?.map((streaming, i) => {
           const { name } = streaming;
           return (
-            <div className="text-white px-4 py-1 rounded-lg bg-slate-500 relative group" key={name}>
+            <div
+              className="text-white px-4 py-1 rounded-lg bg-slate-500 relative group"
+              key={name}
+            >
               <p className="cursor-default">{name}</p>
-              <X onClick={() => removeCategory(i)} className="absolute right-0 top-1.25 w-4 hidden group-hover:block cursor-pointer"/>
+              <X
+                onClick={() => removeSelectedCategory(i)}
+                className="absolute right-0 top-1.25 w-4 hidden group-hover:block cursor-pointer"
+              />
             </div>
           );
         })}
