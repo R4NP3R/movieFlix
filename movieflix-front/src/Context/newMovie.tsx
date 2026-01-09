@@ -48,7 +48,7 @@ export const NewMovieProvider = ({ children }: Props) => {
         name: selectedMovieCategories[index].name,
       },
     ]);
-    selectedMovieCategories.splice(index, 1);
+    setSelectedMovieCategories((prev) => prev.filter((_, i) => i !== 0))
   }
 
   function removeSelectedStreaming(index: number) {
@@ -61,7 +61,7 @@ export const NewMovieProvider = ({ children }: Props) => {
       },
     ]);
 
-    selectedMovieStreamings.splice(index, 1);
+    setSelectedMovieStreamings((values) => values.filter((_, i) => i !== 0))
   }
   useEffect(() => {
     if (newMoviePreview.imageUrl === "") {
@@ -98,7 +98,7 @@ export const NewMovieProvider = ({ children }: Props) => {
     const index = Number(event.target.value);
     if (categories) {
       setSelectedMovieCategories([
-        ...(selectedMovieCategories || []),
+        ...selectedMovieCategories,
         { id: categories[index].id, name: categories[index].name },
       ]);
       categories.splice(index, 1);
@@ -109,7 +109,7 @@ export const NewMovieProvider = ({ children }: Props) => {
     const index = Number(event.target.value);
     if (streamings) {
       setSelectedMovieStreamings([
-        ...(selectedMovieStreamings || []),
+        ...selectedMovieStreamings,
         {
           id: streamings[index].id,
           name: streamings[index].name,

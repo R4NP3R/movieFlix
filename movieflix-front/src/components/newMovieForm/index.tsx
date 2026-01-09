@@ -3,12 +3,13 @@ import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { createMovie } from "../../api";
-import { newMovieContext } from "../../context/NewMovie";
+import { newMovieContext } from "../../context/newMovie";
 import { formatDate } from "../../utils/formatDate";
 import {
   registerMovieSchema,
   type registerMovieInfoSchema,
 } from "../../zodSchemas/registerMovieSchema";
+import type { Category, Streaming } from "../../movieflix";
 
 export const NewMovieForm = () => {
   const {
@@ -43,27 +44,24 @@ export const NewMovieForm = () => {
     }
   }
 
-  useEffect(() => {
-    console.log(selectedMovieCategories)
-    if (selectedMovieCategories.length > 0) {
-      setValue(
-        "categories",
-        selectedMovieCategories.map((c) => c.id)
-      );
-      clearErrors("categories");
+  function formFieldSync(field: "categories" | "streamings", arrayValues: Streaming[] | Category[]) {
+    setValue(
+      field,
+      arrayValues.map((c) => c.id)
+    );
+    if (arrayValues.length > 0) {
+      clearErrors(field);
     }
+  }
+
+  useEffect(() => {
+    formFieldSync("categories", selectedMovieCategories)
+    
   }, [selectedMovieCategories]);
 
-  // useEffect(() => {
-  //   console.log(selectedMovieStreamings)
-  //   if (selectedMovieStreamings.length > 0) {
-  //     setValue(
-  //       "streamings",
-  //       selectedMovieStreamings.map((c) => c.id)
-  //     );
-  //     clearErrors("categories");
-  //   }
-  // }, [selectedMovieStreamings]);
+  useEffect(() => {
+    formFieldSync("streamings", selectedMovieStreamings)
+  }, [selectedMovieStreamings]);
 
   return (
     <form
