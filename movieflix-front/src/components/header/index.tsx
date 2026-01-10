@@ -25,25 +25,25 @@ export const Header = () => {
 
 
   return (
-    <header className="w-full fixed z-50">
+    <header className="w-full fixed z-40">
       <div className="flex justify-between items-center my-container">
         <Link to="" className="text-red-700 text-4xl font-bold">MovieFlix</Link>
         <nav className="py-6 px-8 bg-slate-800 rounded-b-4xl">
           <ul className="flex gap-8 text-white">
             <li>
-              <a href="" className="">
+              <Link to="/" className="">
                 Movies
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="" className=" ">
+              <Link to="/" className=" ">
                 Movies
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="" className=" ">
+              <Link to="/" className=" ">
                 Movies
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
@@ -67,7 +67,7 @@ export const Header = () => {
               <div className="px-8 pt-2">
                 <ul className="">
                 <li className="font-semibold text-lg text-slate-200">
-                  <Link to="createMovie" onClick={closeUserMenu}>Movies</Link>
+                  <Link to="managemovies" onClick={closeUserMenu}>Movies</Link>
                 </li>
                 <li className="font-semibold text-lg text-slate-200">
                   <a href="">Categories</a>

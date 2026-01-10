@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router"
 import App from "../App"
 import { HomePage } from "../pages/homePage"
-import { MovieRegisterPage } from "../pages/movieRegisterPage"
-import { NewMovieProvider } from "../context/NewMovie"
+import { MovieManagerPage } from "../pages/movieManagerPage"
+import { NewMovieProvider } from "../context/movieManager"
 
 export const router = createBrowserRouter([
   {
@@ -10,9 +10,9 @@ export const router = createBrowserRouter([
     element: <App/>,
     children: [
       {path: "", element: <HomePage/>},
-      {path: "createMovie", element: (
+      {path: "manageMovies", element: (
         <NewMovieProvider>
-          <MovieRegisterPage/>
+          <MovieManagerPage/>
         </NewMovieProvider>
       )},
     ]

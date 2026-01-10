@@ -1,5 +1,5 @@
 import { MovieList } from "../../components/movieList";
 
 export const HomePage = () => {
-  return <MovieList />;
+  return <MovieList isDelete={false}/>;
 };

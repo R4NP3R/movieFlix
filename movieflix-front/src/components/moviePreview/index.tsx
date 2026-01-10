@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import { X } from "lucide-react";
 import { useContext } from "react";
-import { newMovieContext } from "../../context/NewMovie";
+import { MovieManagerContext } from "../../context/movieManager";
 
 export const MoviePreview = () => {
   const {
@@ -10,7 +10,7 @@ export const MoviePreview = () => {
     removeSelectedCategory,
     removeSelectedStreaming,
     newMoviePreview,
-  } = useContext(newMovieContext);
+  } = useContext(MovieManagerContext);
   const { title, description, imageUrl, rating, releaseDate } = newMoviePreview;
 
   return (

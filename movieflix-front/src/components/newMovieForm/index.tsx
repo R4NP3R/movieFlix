@@ -3,13 +3,14 @@ import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { createMovie } from "../../api";
-import { newMovieContext } from "../../context/newMovie";
+import { MovieManagerContext } from "../../context/movieManager";
 import { formatDate } from "../../utils/formatDate";
 import {
   registerMovieSchema,
   type registerMovieInfoSchema,
 } from "../../zodSchemas/registerMovieSchema";
 import type { Category, Streaming } from "../../movieflix";
+import { useNavigate } from "react-router";
 
 export const NewMovieForm = () => {
   const {
@@ -21,7 +22,7 @@ export const NewMovieForm = () => {
     addCategory,
     selectedMovieCategories,
     selectedMovieStreamings,
-  } = useContext(newMovieContext);
+  } = useContext(MovieManagerContext);
   const {
     register,
     handleSubmit,
@@ -32,19 +33,28 @@ export const NewMovieForm = () => {
   } = useForm<registerMovieInfoSchema>({
     resolver: zodResolver(registerMovieSchema),
   });
+  const navigate = useNavigate()
+
+
+  function creationSucess() {
+    reset();
+    navigate("/");
+  }
 
   async function handlecreateNewMovie(data: registerMovieInfoSchema) {
     data.releaseDate = formatDate(data.releaseDate);
     parseFloat(data.rating);
-    const result = await createMovie(data);
-    if (typeof result === "object") {
-      console.log("message erro:", result.data);
-    } else {
-      // creationSucess();
-    }
+    const result = await createMovie(data);    
+      creationSucess();
+
+    return result
+    
   }
 
-  function formFieldSync(field: "categories" | "streamings", arrayValues: Streaming[] | Category[]) {
+  function formFieldSync(
+    field: "categories" | "streamings",
+    arrayValues: Streaming[] | Category[]
+  ) {
     setValue(
       field,
       arrayValues.map((c) => c.id)
@@ -55,12 +65,11 @@ export const NewMovieForm = () => {
   }
 
   useEffect(() => {
-    formFieldSync("categories", selectedMovieCategories)
-    
+    formFieldSync("categories", selectedMovieCategories);
   }, [selectedMovieCategories]);
 
   useEffect(() => {
-    formFieldSync("streamings", selectedMovieStreamings)
+    formFieldSync("streamings", selectedMovieStreamings);
   }, [selectedMovieStreamings]);
 
   return (

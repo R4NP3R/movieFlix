@@ -5,3 +5,8 @@
   width: 90%;
   margin: 0 auto;
 }
+
+
+.bg-opacity-80 {
+  background-color: rgba(0,0,0, 0.8);
+}
