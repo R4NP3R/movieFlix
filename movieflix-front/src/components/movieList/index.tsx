@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Movie } from "../../movieflix";
 import { deleteMovie, getMovies } from "../../api";
 import { twMerge } from "tailwind-merge";
-import { X } from "lucide-react";
+import { Loader, X } from "lucide-react";
 
 type Params = {
   isDelete: boolean;
@@ -36,11 +36,10 @@ export const MovieList = ({ isDelete }: Params) => {
 
   function handleDeleteMovie() {
     if (movies) {
-    deleteMovie(movies[movieIndex].id)
-    setMovies(movies.filter((_, i) => i !== movieIndex))
-    closeModal();
+      deleteMovie(movies[movieIndex].id);
+      setMovies(movies.filter((_, i) => i !== movieIndex));
+      closeModal();
     }
-    
   }
 
   return (
@@ -48,7 +47,7 @@ export const MovieList = ({ isDelete }: Params) => {
       <ul className="mt-10 flex gap-10 flex-wrap">
         {!movies ? (
           <div className="w-full min-h-full flex items-center justify-center text-4xl text-white">
-            Carregando...
+            <Loader width={40} height={40} className="animate-spin"/>
           </div>
         ) : (
           <>
@@ -109,6 +108,11 @@ export const MovieList = ({ isDelete }: Params) => {
               Ok
             </button>
           </div>
+        </div>
+      )}
+      {movies && movies.length === 0 && (
+        <div className="w-full min-h-full flex items-center justify-center text-4xl text-white">
+          <span>Não existem filmes cadastrados</span>
         </div>
       )}
     </>
