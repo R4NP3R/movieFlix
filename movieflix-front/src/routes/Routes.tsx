@@ -3,6 +3,7 @@ import App from "../App"
 import { HomePage } from "../pages/homePage"
 import { MovieManagerPage } from "../pages/movieManagerPage"
 import { NewMovieProvider } from "../context/movieManager"
+import { StreamingManagerPage } from "../pages/streamingManagerPage"
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +15,9 @@ export const router = createBrowserRouter([
         <NewMovieProvider>
           <MovieManagerPage/>
         </NewMovieProvider>
+      )},
+      {path: "manageStreamings", element: (
+        <StreamingManagerPage/>
       )},
     ]
   },

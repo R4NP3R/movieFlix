@@ -112,7 +112,7 @@ export const MovieList = ({ isDelete }: Params) => {
       )}
       {movies && movies.length === 0 && (
         <div className="w-full min-h-full flex items-center justify-center text-4xl text-white">
-          <span>Não existem filmes cadastrados</span>
+          <span>There are no movies listed</span>
         </div>
       )}
     </>
