@@ -1,5 +1,6 @@
 package com.movieflix.config;
 
+import com.movieflix.exceptions.HandleExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,6 +24,12 @@ public class AplicationControllerAdvice {
     );
 
     return errorsList;
+  }
+
+  @ExceptionHandler(HandleExistsException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public String handleExistException (HandleExistsException ex) {
+    return ex.getMessage();
   }
 
 

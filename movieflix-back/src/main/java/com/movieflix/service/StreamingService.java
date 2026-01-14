@@ -2,6 +2,7 @@ package com.movieflix.service;
 
 import com.movieflix.controller.request.StreamingRequest;
 import com.movieflix.entity.Streaming;
+import com.movieflix.exceptions.HandleExistsException;
 import com.movieflix.mapper.StreamingMapper;
 import com.movieflix.repository.StreamingRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class StreamingService {
 
 
   public Streaming saveStreaming(StreamingRequest request) {
+    validateStreamingDoesNotExist(request.name());
     Streaming newStreaming = StreamingMapper.map(request);
 
     return streamingRepository.save(newStreaming);
@@ -35,5 +37,10 @@ public class StreamingService {
     streamingRepository.deleteById(id);
   }
 
+  public void validateStreamingDoesNotExist(String name) {
+  streamingRepository.findByName(name).ifPresent(streaming -> {
+    throw new HandleExistsException("Already exists streaming with this name");
+  });
+  }
 
 }
