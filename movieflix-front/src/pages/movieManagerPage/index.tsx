@@ -49,7 +49,7 @@ export const MovieManagerPage = () => {
               form="createMovie"
               className="w-full h-8 bg-slate-800 rounded-2xl text-slate-200 cursor-pointer"
             >
-              Criar Filme
+              Create Movie
             </button>
           </div>
           <MoviePreview />

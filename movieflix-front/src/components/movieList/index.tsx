@@ -90,16 +90,16 @@ export const MovieList = ({ isDelete }: Params) => {
         <div className="absolute w-full h-full top-0 left-0 bg-black z-50 flex justify-center items-center bg-opacity-80">
           <div className="bg-slate-600 w-1/5 h-1/5 flex items-center flex-col gap-2 p-4 relative">
             <p className="text-lg font-semibold text-white">
-              Certeza que deseja deletar?
+              You are sure to delete:
             </p>
             <p className="text-lg font-semibold text-white text-center">
-              {movies[movieIndex].title}
+              {movies[movieIndex].title} ?
             </p>
             <button
               onClick={closeModal}
               className="absolute bottom-4 left-20 p-2 bg-red-500 text-white cursor-pointer"
             >
-              Cancelar
+              Cancel
             </button>
             <button
               onClick={handleDeleteMovie}
