@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { Category, Movie, Streaming } from "./movieflix";
 import type { registerMovieInfoSchema } from "./zodSchemas/registerMovieSchema";
+import type { registerStreamingInfoSchema } from "./zodSchemas/registerStreamingSchema";
 
 const BASE_URL = "http://localhost:8080/movieflix";
 
@@ -41,6 +42,18 @@ export const createMovie = async (newmovie: registerMovieInfoSchema) => {
       return err.response
     }
   }
+}
+
+export const createStreaming = async (newstreaming: registerStreamingInfoSchema) => {
+  try {
+    const data = await axios.post<registerMovieInfoSchema>(`${BASE_URL}/streaming`, newstreaming)
+    return data
+  } catch (err) {
+    if(axios.isAxiosError(err)) {
+      return err.response
+    }
+  }
+
 }
 
 

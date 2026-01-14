@@ -46,9 +46,7 @@ export const NewMovieForm = () => {
     parseFloat(data.rating);
     const result = await createMovie(data);    
       creationSucess();
-
-    return result
-    
+    return result    
   }
 
   function formFieldSync(
