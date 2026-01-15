@@ -27,7 +27,7 @@ public class AplicationControllerAdvice {
   }
 
   @ExceptionHandler(HandleExistsException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(HttpStatus.CONFLICT)
   public String handleExistException (HandleExistsException ex) {
     return ex.getMessage();
   }
