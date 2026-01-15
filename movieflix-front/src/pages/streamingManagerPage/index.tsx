@@ -42,7 +42,7 @@ export const StreamingManagerPage = () => {
   async function handleCreateStreaming(data: registerStreamingInfoSchema) {
     const result = await createStreaming(data);
 
-    if (result?.status === 400) {
+    if (result?.status === 409) {
       setCreateError(result.data);
 
       setTimeout(() => {

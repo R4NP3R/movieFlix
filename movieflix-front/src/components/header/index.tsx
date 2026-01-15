@@ -70,7 +70,7 @@ export const Header = () => {
                   <Link to="managemovies" onClick={closeUserMenu}>Movies</Link>
                 </li>
                 <li className="font-semibold text-lg text-slate-200">
-                  <a href="">Categories</a>
+                  <a href="managecategories">Categories</a>
                 </li>
                 <li className="font-semibold text-lg text-slate-200">
                   <Link to="managestreamings" onClick={closeUserMenu}>Streamings</Link>

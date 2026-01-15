@@ -2,6 +2,7 @@ import axios from "axios";
 import type { Category, Movie, Streaming } from "./movieflix";
 import type { registerMovieInfoSchema } from "./zodSchemas/registerMovieSchema";
 import type { registerStreamingInfoSchema } from "./zodSchemas/registerStreamingSchema";
+import type { registerCategoryInfoSchema } from "./zodSchemas/registerCategorySchema";
 
 const BASE_URL = "http://localhost:8080/movieflix";
 
@@ -53,8 +54,20 @@ export const createStreaming = async (newstreaming: registerStreamingInfoSchema)
       return err.response
     }
   }
-
 }
+
+export const createCategory = async (newCategory: registerCategoryInfoSchema) => {
+  try {
+    const data = await axios.post(`${BASE_URL}/category`, newCategory)
+    return data
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      return err.response
+    }
+  }
+}
+
+
 
 
 // DELETE METHODS
