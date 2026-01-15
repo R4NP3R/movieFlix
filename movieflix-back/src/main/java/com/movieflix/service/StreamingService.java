@@ -37,9 +37,9 @@ public class StreamingService {
     streamingRepository.deleteById(id);
   }
 
-  public void validateStreamingDoesNotExist(String name) {
+  private void validateStreamingDoesNotExist(String name) {
   streamingRepository.findByName(name).ifPresent(streaming -> {
-    throw new HandleExistsException("Already exists streaming with this name");
+    throw new HandleExistsException("Already exists streaming with this name!");
   });
   }
 
